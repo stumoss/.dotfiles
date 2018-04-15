@@ -1,0 +1,9 @@
+directory: ~/Music
+library: ~/.config/beets/musiclibrary.blb
+import:
+    move: yes
+plugins: lastgenre fetchart ftintitle smartplaylist random embedart duplicates scrub missing badfiles
+embedart:
+    auto: yes
+scrub:
+    auto: yes
