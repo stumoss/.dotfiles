@@ -7,6 +7,7 @@ self: super:
     ripgrep = super.ripgrep;
     fd = super.fd;
     fzf = super.fzf;
+    skim = super.skim;
     htop = super.htop;
     xsel = super.xsel;
     neovim = super.neovim;
@@ -36,6 +37,10 @@ self: super:
     go-bindata = super.go-bindata;
     goimports = super.goimports;
     go2nix = super.go2nix;
+
+    # Docker
+    docker = super.docker;
+    docker-compose = super.docker_compose;
 
     socat = super.socat;
     sshfs = super.sshfs;
