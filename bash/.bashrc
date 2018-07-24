@@ -7,7 +7,12 @@
 
 [ "$(command -v fd >/dev/null)" ] && [ "$(command -v sk >/dev/null)" ] && export SKIM_DEFAULT_COMMAND="fd"
 
-if command -v fzf-share >/dev/null; then
+if command -v sk-share >/dev/null; then
+    # shellcheck source=/dev/null
+    . "./sk-share/key-bindings.bash"
+    # shellcheck source=/dev/null
+    . "./sk-share/completion.bash"
+elif command -v fzf-share >/dev/null; then
     # shellcheck source=/dev/null
     . "$(fzf-share)/key-bindings.bash"
     # shellcheck source=/dev/null
