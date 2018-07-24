@@ -1,7 +1,7 @@
-[ -f "$HOME/Code/Go" ] && export GOPATH=$HOME/Code/Go
-[ -f "$HOME/Code/Go/bin" ] && export PATH=$PATH:$GOPATH/bin
-[ -f "$HOME/Code/Scripts" ] && export PATH=$PATH:$HOME/Code/Scripts
-[ -f "$HOME/.cargo/bin" ] && export PATH=$PATH:$HOME/.cargo.bin
+[ -d "$HOME/Code/Go" ] && export GOPATH=$HOME/Code/Go
+[ -d "$HOME/Code/Go/bin" ] && export PATH=$PATH:$GOPATH/bin
+[ -d "$HOME/Code/Scripts" ] && export PATH=$PATH:$HOME/Code/Scripts
+[ -d "$HOME/.cargo/bin" ] && export PATH=$PATH:$HOME/.cargo.bin
 
 [ "$(command -v fd >/dev/null)" ] && [ "$(command -v fzf >/dev/null)" ] && export FZF_DEFAULT_COMMAND="fd"
 

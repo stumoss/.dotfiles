@@ -28,7 +28,7 @@ Plug 'https://github.com/godlygeek/tabular'
 if executable('nvim')
 "    Plug 'https://github.com/neomake/neomake'
 "    Plug 'https://github.com/roxma/nvim-completion-manager'
-"    Plug 'https://github.com/autozimu/LanguageClient-neovim'
+    Plug 'https://github.com/autozimu/LanguageClient-neovim'
 endif
 
 "Plug 'fzfWrapper'
