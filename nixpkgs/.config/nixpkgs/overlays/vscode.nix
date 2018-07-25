@@ -48,10 +48,10 @@ self: super:
         sha256 = "11fms5p4zk55x6w0dwasz058apc05r7bimars1w2p0yyvj2d9gzi";
       }
       {
-        name = "vscode-go";
-        publisher = "Microsoft";
+        name = "Go";
+        publisher = "ms-vscode";
         version = "0.6.84";
-        sha256 = "11fms5p4zk55x6w0dwasz058apc05r7bimars1w2p0yyvj2d9gzi";
+        sha256 = "0nq2xlv7qxfxvb1ag9dnxfm80pj7llrjnx4fvkd096jnmm3bgb0n";
       }
     ];
   };
