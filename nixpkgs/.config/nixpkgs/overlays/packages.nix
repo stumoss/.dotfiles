@@ -29,7 +29,9 @@ self: super:
     vscode-with-extensions = super.vscode-with-extensions;
 
     ## Rust dev tools
-    rust = super.latest.rustChannels.stable.rust;
+    #rust = super.latest.rustChannels.stable.rust;
+    rustup = super.rustup;
+    gcc = super.gcc; # Required for RLS to work
     carnix = super.carnix;
 
     ## Go dev tools

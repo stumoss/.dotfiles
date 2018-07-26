@@ -6,6 +6,7 @@ self: super:
       vam = {
         knownPlugins = super.vimPlugins;
         pluginDictionaries = [
+          { name = "LanguageClient-neovim"; }
           { name = "rust-vim"; }
           { name = "neomake"; }
           { name = "molokai"; }
@@ -22,8 +23,6 @@ self: super:
           { name = "vim-addon-vim2nix"; }
           { name = "fugitive"; }
           { name = "airline"; }
-          { name = "nvim-completion-manager";}
-          { name = "nvim-cm-racer"; }
         ];
       };
 
@@ -81,6 +80,7 @@ self: super:
 
                 au BufRead,BufNewFile *.md setlocal textwidth=80
 
+
                 "====[ Keymap Settings ]=======================================================
                 " Unmap F1 key
                 inoremap <F1> <ESC>
@@ -137,12 +137,20 @@ self: super:
             "===[ NERDTree ] ==============================================================
             let NERDTreeMinimalUI=1
 
-            let $RUST_SRC_PATH = '${super.stdenv.mkDerivation {
-              inherit (super.rustc) src;
-              inherit (super.rustc.src) name;
-              phases = ["unpackPhase" "installPhase"];
-              installPhase = "cp -r src $out";
-            }}'
+            "===[ Rust ] ==================================================================
+            let g:LanguageClient_serverCommands = {
+              \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+              \ }
+
+            autocmd BufReadPost *.rs setlocal filetype=rust
+
+            "===[ LanguageClient ] ========================================================
+            let g:LanguageClient_autostart = 1
+
+            " Maps K to hover, gd to goto definition, F2 to rename
+            nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+            nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+            nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
             '';
     };
   };
