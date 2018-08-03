@@ -130,7 +130,6 @@ self: super:
           gitAndTools.gitFull
           gitAndTools.hub
           latest.rustChannels.stable.rust
-          rustfmt
           carnix
         ];
       }
