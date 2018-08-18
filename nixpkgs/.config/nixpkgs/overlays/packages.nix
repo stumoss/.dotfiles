@@ -15,6 +15,7 @@ self: super:
     borgbackup = super.borgbackup;
     renameutils = super.renameutils;
     alacritty = super.alacritty;
+    openssh = super.openssh;
 
     ## Doc Tools
     pandoc = super.pandoc;
