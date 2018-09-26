@@ -23,6 +23,11 @@ self: super:
           { name = "vim-addon-vim2nix"; }
           { name = "fugitive"; }
           { name = "airline"; }
+          { name = "nvim-completion-manager"; }
+          { name = "deoplete-nvim"; }
+          { name = "neosnippet"; }
+          { name = "neosnippet-snippets"; }
+          { name = "echodoc"; }
         ];
       };
 
@@ -107,7 +112,7 @@ self: super:
 
 
             "====[ vim-go Settings ]=======================================================
-            let g:go_fmt_command = "goimports"
+            let g:go_fmt_command = "${super.goimports}/bin/goimports"
             let g:go_fmt_fail_silently = 1
             let g:go_list_type = "quickfix"
 
@@ -117,13 +122,7 @@ self: super:
             "====[ ripgrep ]===============================================================
             if executable('rg')
               " Use ripgrep over grep
-              set grepprg=rg\ --vimgrep
-
-              " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-              "let g:ctrlp_user_command = 'rg --no-heading %s ""'
-
-              " ripgrep is fast enough that CtrlP doesn't need to cache
-              "let g:ctrlp_use_caching = 0
+              set grepprg=${super.ripgrep}/bin/rg\ --vimgrep
             endif
 
             let g:neomake_echo_current_error = 1
@@ -131,26 +130,30 @@ self: super:
             let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
 
-            "===[ fzf ] ===================================================================
-                "command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "\!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-
             "===[ NERDTree ] ==============================================================
             let NERDTreeMinimalUI=1
 
-            "===[ Rust ] ==================================================================
+            "===[ LanguageCLient ] ========================================================
             let g:LanguageClient_serverCommands = {
               \ 'rust': ['rls'],
+              \ 'cpp': ['cquery', '--log-file=/tmp/cquery.log'],
+              \ 'c': ['cquery', '--log-file=/tmp/cquery.log'],
               \ }
 
-            autocmd BufReadPost *.rs setlocal filetype=rust
-
-            "===[ LanguageClient ] ========================================================
             let g:LanguageClient_autostart = 1
 
             " Maps K to hover, gd to goto definition, F2 to rename
             nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
             nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
             nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+            imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+            smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+            xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+
+            "===[ Rust ] =================================================================
+            autocmd BufReadPost *.rs setlocal filetype=rust
       '';
     };
   };

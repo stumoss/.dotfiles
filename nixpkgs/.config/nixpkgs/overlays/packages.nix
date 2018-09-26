@@ -1,4 +1,7 @@
-self: super:
+slf: super:
+let
+  unstable = import <nixpkgs-unstable> {};
+in
 {
   userPackages = super.userPackages or {} // {
     bind = super.bind;
@@ -16,12 +19,14 @@ self: super:
     renameutils = super.renameutils;
     alacritty = super.alacritty;
     openssh = super.openssh;
+    autocutsel = super.autocutsel;
 
     ## Doc Tools
     pandoc = super.pandoc;
 
     ## Generic dev tools
     git = super.git;
+    git-extras = super.gitAndTools.git-extras;
     hub = super.gitAndTools.hub;
     gist = super.gist;
     git-lfs = super.git-lfs;
@@ -33,7 +38,7 @@ self: super:
     rust = super.latest.rustChannels.stable.rust;
     carnix = super.carnix;
 
-    ## Go dev tools
+    # Go dev tools
     go = super.go;
     go-bindata = super.go-bindata;
     goimports = super.goimports;
@@ -68,7 +73,7 @@ self: super:
     weechat = super.weechat;
 
     # Browser
-    google-chrome = super.google-chrome; # Doesn't work on darwin
+    #google-chrome = super.google-chrome; # Broken on darwin
 
     # Network tools
     #wireshark-gtk = super.wireshark-gtk;
@@ -107,7 +112,7 @@ self: super:
     #  ${super.xdg_utils}/bin/xdg-open "https://cmake.org/cmake/help/v''${1:-2.8.12}/cmake.html"
     #'';
 
-    ##dobi = super.callPackage /home/stu/.dotfiles/nixpkgs/.config/nixpkgs/pkgs/dobi/default.nix { };
+    dobi = super.callPackage ../pkgs/dobi/v0.11.1/default.nix { };
 
     nix-shell-rust = super.writeScriptBin "nix-shell-rust"
     ''
@@ -141,6 +146,59 @@ self: super:
     ''
       #!${super.bash}/bin/bash -p
       CGO_ENABLED=0 ${super.go}/bin/go build -a -ldflags '-extldflags "-static"' $@
+    '';
+
+    youtube-dl-playlist = super.writeScriptBin "youtube-dl-playlist"
+    ''
+      #!${super.bash}/bin/bash -p
+      set -euo pipefail
+
+      VERSION=1.0.0
+
+      function usage()
+      {
+        echo "$(basename $0) $VERSION"
+        echo "Stuart Moss <samoss@gmail.com>"
+        echo ""
+        echo "USAGE:"
+        echo " $(basename $0) [FLAGS] <playlist url>"
+        echo ""
+        echo "FLAGS:"
+        echo "  -h, --help      Prints help information"
+        echo "  -v, --version   Prints version information"
+        echo ""
+        echo "ARGS:"
+        echo "  <playlist url>  The url of the youtube playlist to download"
+        echo ""
+      }
+
+      while :
+      do
+          case "$1" in
+            -h | --help)
+                usage
+                # no shifting needed here, we're done.
+                exit 0
+                ;;
+            -v | --version)
+                usage
+                exit 0
+                ;;
+            --) # End of all options
+                shift
+                break;
+                ;;
+            -*)
+                echo "Error: Unknown option: $1" >&2
+                exit 1
+                ;;
+            *)  # No more options
+                break
+                ;;
+          esac
+      done
+
+      ${super.youtube-dl}/bin/youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s" $1
     '';
 
     nix-build-callpackage = super.writeScriptBin "nix-build-callpackage"

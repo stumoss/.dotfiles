@@ -53,6 +53,12 @@ self: super:
         version = "0.6.84";
         sha256 = "0nq2xlv7qxfxvb1ag9dnxfm80pj7llrjnx4fvkd096jnmm3bgb0n";
       }
+      {
+        name = "cquery";
+        publisher = "cquery-project";
+        version = "0.1.10";
+        sha256 = "0waadz2w9wzfhf84z1pk0z7v3xmk3zx36saq9qriw0sxrdl5frpd";
+      }
     ];
   };
 }

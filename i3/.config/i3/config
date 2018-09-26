@@ -94,7 +94,7 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 set $workspace1  "1 "
-set $workspace2  "2 "
+set $workspace2  "2"
 set $workspace3  "3"
 set $workspace4  "4"
 set $workspace5  "5"
@@ -102,7 +102,7 @@ set $workspace6  "6"
 set $workspace7  "7"
 set $workspace8  "8"
 set $workspace9  "9"
-set $workspace10 "10"
+set $workspace10 ""
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace1
@@ -130,11 +130,11 @@ bindsym $mod+Shift+0 move container to workspace $workspace10
 
 # set workspace output
 workspace $workspace1  output HDMI1
-workspace $workspace2  output HDMI2
+workspace $workspace2  output HDMI1
 workspace $workspace3  output HDMI1
-workspace $workspace4  output HDMI2
+workspace $workspace4  output HDMI1
 workspace $workspace5  output HDMI1
-workspace $workspace6  output HDMI2
+workspace $workspace6  output HDMI1
 workspace $workspace7  output HDMI1
 workspace $workspace8  output HDMI2
 workspace $workspace9  output HDMI1
@@ -207,9 +207,11 @@ bar {
 }
 
 assign [class="xterm"] $workspace1
-assign [class="Chromium-browser"] $workspace2
-assign [class="google-chrome-stable"] $workspace2
-assign [class="Firefox"] $workspace2
+assign [class="Chromium-browser"] $workspace10
+assign [class="google-chrome-stable"] $workspace10
+assign [class="Firefox"] $workspace10
 
+exec --no-startup-id autocutsel -s CLIBOARD
+exec --no-startup-id autocutsel -s PRIMARY
 exec --no-startup-id feh --bg-scale ~/Pictures/Desktop\ Backgrounds/Yosemite\ 3.jpg
 exec --no-startup-id i3-msg 'exec chromium; workspace $workspace1; exec i3-sensible-terminal'
