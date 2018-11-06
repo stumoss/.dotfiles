@@ -1,4 +1,4 @@
-slf: super:
+self: super:
 let
   unstable = import <nixpkgs-unstable> {};
 in
@@ -204,7 +204,7 @@ in
     nix-build-callpackage = super.writeScriptBin "nix-build-callpackage"
     ''
       #!${super.bash}/bin/bash -p
-      nix-build -E 'with import <nixpkgs> { };  callPackage "$1" {}'
+      exec nix-build -E "with import <nixpkgs> {}; callPackage $(realpath ''${1}) {}"
     '';
 
     nix-rebuild = super.writeScriptBin "nix-rebuild"
