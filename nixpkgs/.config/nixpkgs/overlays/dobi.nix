@@ -1,6 +1,6 @@
 self: super:
 {
-  dobi = super.buildGoPackage {
+  dobi = super.buildGoPackage rec {
     name = "dobi-${version}";
     version = "0.11.1";
     rev = "7cca562fb4df4d06d0b0107108478d3d434c775f";
