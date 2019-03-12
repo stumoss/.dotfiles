@@ -9,9 +9,9 @@
 
 if command -v sk-share >/dev/null; then
     # shellcheck source=/dev/null
-    . "$HOME/.config/sk-share/key-bindings.bash"
+    . "$(sk-share)/key-bindings.bash"
     # shellcheck source=/dev/null
-    . "$HOME/.config/sk-share/completion.bash"
+    . "$(sk-share)/completion.bash"
 elif command -v fzf-share >/dev/null; then
     # shellcheck source=/dev/null
     . "$(fzf-share)/key-bindings.bash"
