@@ -1,0 +1,179 @@
+set $mod Mod4
+
+font pango:Source Code Pro 8, Font Awesome 9, Icons 9
+
+
+gaps inner 10
+smart_gaps on
+default_border none
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec alacritty
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start program launcher
+bindsym $mod+d exec rofi -show drun
+
+# There also is the (new) i3-dmenu-desktop which only displays applications
+# shipping a .desktop file. It is a wrapper around dmenu, so you need that
+# installed.
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+Minus swaymsg splith
+
+# split in vertical orientation
+#bindsym $mod+| swaymsg splitv
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+#bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+#bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+set $workspace1  "1 "
+set $workspace2  "2"
+set $workspace3  "3"
+set $workspace4  "4"
+set $workspace5  "5"
+set $workspace6  "6"
+set $workspace7  "7"
+set $workspace8  "8"
+set $workspace9  "9"
+set $workspace10 ""
+
+# switch to workspace
+bindsym $mod+1 workspace $workspace1
+bindsym $mod+2 workspace $workspace2
+bindsym $mod+3 workspace $workspace3
+bindsym $mod+4 workspace $workspace4
+bindsym $mod+5 workspace $workspace5
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
+bindsym $mod+9 workspace $workspace9
+bindsym $mod+0 workspace $workspace10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $workspace1
+bindsym $mod+Shift+2 move container to workspace $workspace2
+bindsym $mod+Shift+3 move container to workspace $workspace3
+bindsym $mod+Shift+4 move container to workspace $workspace4
+bindsym $mod+Shift+5 move container to workspace $workspace5
+bindsym $mod+Shift+6 move container to workspace $workspace6
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
+bindsym $mod+Shift+9 move container to workspace $workspace9
+bindsym $mod+Shift+0 move container to workspace $workspace10
+
+# set workspace output
+workspace $workspace1  output HDMI-A-1
+workspace $workspace2  output HDMI-A-1
+workspace $workspace3  output HDMI-A-1
+workspace $workspace4  output HDMI-A-1
+workspace $workspace5  output HDMI-A-1
+workspace $workspace6  output HDMI-A-1
+workspace $workspace7  output HDMI-A-1
+workspace $workspace8  output HDMI-A-1
+workspace $workspace9  output HDMI-A-1
+workspace $workspace10 output HDMI-A-2
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exit
+bindsym $mod+r mode "resize"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5%-
+bindsym XF86AudioMute exec --no-startup-id amixer -q set Master togglemute
+bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u
+#bindsym XF86HomePage exec --no-startup-id
+#bindsym XF86Mail exec --no-startup-id
+#bindsym XF86Search exec --no-startup-id
+#bindsym XF86Launch5 exec --no-startup-id
+#bindsym XF86Launch6 exec --no-startup-id
+#bindsym XF86Launch7 exec --no-startup-id
+#bindsym XF86Launch8 exec --no-startup-id
+#bindsym XF86Launch9 exec --no-startup-id
+#bindsym XF86Calculator exec --no-startup-id
+#bindsym XF86Favourites exec --no-startup-id
+bindsym $mod+Space exec swaylock --scaling fill -i "~/Pictures/Desktop\ Backgrounds/Yosemite\ 3.png"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    position top
+    font pango:Font Awesome 7, Source Code Pro 7
+    tray_output HDMI-A-2
+    status_command i3status-rs ~/.config/sway/swaystatus.toml
+    colors {
+        separator #393939
+        background #272822
+        statusline #cccccc
+        focused_workspace #999999 #999999 #2d2d2d
+        active_workspace #999999 #999999 #cccccc
+        inactive_workspace #393939 #2d2d2d #cccccc
+        urgent_workspace #f2777a #f2777a #cccccc
+    }
+}
+
+assign [class="Chromium-browser"] $workspace10
+assign [class="google-chrome-stable"] $workspace10
+assign [class="Firefox"] $workspace10
+assign [class="firefox"] $workspace10
+
+output HDMI-A-1 pos 0 0 res 1920x1080
+output HDMI-A-2 pos 1920 0 res 1920x1080
+output "*" bg ~/Pictures/Desktop\ Backgrounds/Yosemite\ 3.jpg fill
+
+exec --no-startup-id swaymsg 'exec firefox'
