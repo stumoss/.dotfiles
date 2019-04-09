@@ -7,18 +7,6 @@
 
 [ "$(command -v fd >/dev/null)" ] && [ "$(command -v sk >/dev/null)" ] && export SKIM_DEFAULT_COMMAND="fd"
 
-if command -v sk-share >/dev/null; then
-    # shellcheck source=/dev/null
-    . "$(sk-share)/key-bindings.bash"
-    # shellcheck source=/dev/null
-    . "$(sk-share)/completion.bash"
-elif command -v fzf-share >/dev/null; then
-    # shellcheck source=/dev/null
-    . "$(fzf-share)/key-bindings.bash"
-    # shellcheck source=/dev/null
-    . "$(fzf-share)/completion.bash"
-fi
-
 # shellcheck source=/home/stu/.travis/travis.sh
 [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
 
@@ -40,7 +28,7 @@ if command -v tmux >/dev/null; then
     alias tmux='tmux -f "$HOME/.config/tmux/tmux.conf"'
 fi
 
-if command -v exa >/dev/null; then
-  alias ls='exa'
-  alias la='exa -aghl --git'
+if command -v remind >/dev/null; then
+    alias remind='remind -m'
 fi
+alias dotfiles='git --git-dir=/home/stu/.cfg/ --work-tree=/home/stu'

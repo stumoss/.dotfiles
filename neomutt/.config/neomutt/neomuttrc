@@ -1,0 +1,46 @@
+# Ensure TLS is enforced
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+set imap_user = "samoss@gmail.com"
+set imap_pass = "dwnjwxkvuhzqyawc"
+set imap_keepalive = 900
+
+#set smtp_url = "smtps://smoss@smtp.gmail.com:465/"
+# Protocol: smtp for TLS (587), smtps for SSL (465)
+set smtp_url = "smtp://samoss@gmail.com@smtp.gmail.com:587/"
+set smtp_pass = "dwnjwxkvuhzqyawc"
+set from = "samoss@gmail.com"
+set realname = "Stuart Moss"
+
+set record = "+[Gmail]/Sent Mail"
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed="+[Gmail]/Drafts"
+
+set header_cache=~/.config/neomutt/cache/headers
+set message_cachedir=~/.config/neomutt/cache/bodies
+set certificate_file=~/.config/neomutt/certificates
+
+set editor = "nvim"
+set charset = "utf-8"
+set record = ""
+
+set move = no
+
+set sort = 'threads'
+set sort_aux = 'last-date-received'
+set imap_check_subscribed
+
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+hdr_order Date From To Cc
+
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+
+set text_flowed = yes
+
+bind index G imap-fetch-mail

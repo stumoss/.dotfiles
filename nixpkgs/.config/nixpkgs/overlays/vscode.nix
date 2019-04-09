@@ -8,20 +8,20 @@ self: super:
       {
         name = "vim";
         publisher = "vscodevim";
-        version = "0.11.2";
-        sha256 = "0na19ddacbr53r7vzyq8m0s9g34g98c6pdj87mdvhn3xfgqab6la";
+        version = "1.0.8";
+        sha256 = "0yqfn8b2jfrijzf731sggyvik2immlx9hfgmsgp1mx01hpyisd9r";
       }
       {
         name = "doxdocgen";
         publisher = "cschlosser";
-        version = "0.3.1";
-        sha256 = "1bqa8x0g92zlfrs291bk5pakirnq91kqkpm036b0k0c4qbfma7is";
+        version = "0.4.1";
+        sha256 = "06f4nxjd5ph66bhlyjim87haams286sjhrw7vmiv2rckzinygh1h";
       }
       {
         name = "cmake-tools";
         publisher = "vector-of-bool";
-        version = "1.0.1";
-        sha256 = "1144p0fbp9dmv21sdajx933h8575sjwmysx1v01gy6vzn4acdk5d";
+        version = "1.1.3";
+        sha256 = "1x9ph4r742dxj0hv6269ngm7w4h0n558cvxcz9n3cg79wpd7j5i5";
       }
       {
         name = "cmake-tools-helper";
@@ -36,22 +36,16 @@ self: super:
         sha256 = "11hzjd0gxkq37689rrr2aszxng5l9fwpgs9nnglq3zhfa1msyn08";
       }
       {
-        name = "cppcheck";
-        publisher = "matthewferreira";
-        version = "0.2.2";
-        sha256 = "05lx83g0j7w1b22s6qn3fn7kj95lg3yq0m7bsifv9myfkmqcaqdm";
-      }
-      {
         name = "vscode-docker";
         publisher = "PeterJausovec";
-        version = "0.0.27";
-        sha256 = "11fms5p4zk55x6w0dwasz058apc05r7bimars1w2p0yyvj2d9gzi";
+        version = "0.5.2";
+        sha256 = "1nrwsgg3kslsy4v0pq64bqazi5s6a823inxmhdpw93wigb1yqc7i";
       }
       {
         name = "Go";
         publisher = "ms-vscode";
-        version = "0.6.84";
-        sha256 = "0nq2xlv7qxfxvb1ag9dnxfm80pj7llrjnx4fvkd096jnmm3bgb0n";
+        version = "0.9.1";
+        sha256 = "1dq3kfxdvrbwa4sv21na0jvmb35yx0g1j8dfpjzff617j43bjplg";
       }
       {
         name = "cquery";

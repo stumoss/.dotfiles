@@ -6,25 +6,25 @@ self: super:
       vam = {
         knownPlugins = super.vimPlugins;
         pluginDictionaries = [
-          { name = "LanguageClient-neovim"; }
-          { name = "rust-vim"; }
-          { name = "neomake"; }
-          { name = "molokai"; }
-          { name = "nerdtree"; }
-          { name = "vim-nerdtree-tabs"; }
-          { name = "vim-go"; }
-          { name = "vim-pandoc"; }
-          { name = "vim-pandoc-syntax"; }
+          { name = "airline"; }
           { name = "elm-vim"; }
-          { name = "vim-nix"; }
-          { name = "tagbar"; }
           { name = "fzf-vim"; }
           { name = "fzfWrapper"; }
-          { name = "vim-addon-vim2nix"; }
-          { name = "fugitive"; }
-          { name = "airline"; }
-          { name = "nvim-completion-manager"; }
-          { name = "deoplete-nvim"; }
+          { name = "LanguageClient-neovim"; }
+          { name = "molokai"; }
+          { name = "nerdtree"; }
+          { name = "rust-vim"; }
+          { name = "vim-go"; }
+
+
+          #{ name = "neomake"; }
+          #{ name = "vim-nerdtree-tabs"; }
+          { name = "vim-pandoc"; }
+          { name = "vim-pandoc-syntax"; }
+          { name = "vim-nix"; }
+          { name = "tagbar"; }
+          #{ name = "fugitive"; }
+          { name = "ncm2"; }
           { name = "neosnippet"; }
           { name = "neosnippet-snippets"; }
           { name = "echodoc"; }
@@ -104,7 +104,7 @@ self: super:
             nmap <leader>G :grep!
             " Toggle paste mode with \o
             nmap <leader>o :set paste!<CR>
-            " Use FZF when doing ctrl+p
+            " Use FZF/skim when doing ctrl+p
             nmap <c-p> :Files<CR>
             nmap <leader>p : Files<CR>
             " Use FZF find for \f
@@ -135,9 +135,15 @@ self: super:
 
             "===[ LanguageCLient ] ========================================================
             let g:LanguageClient_serverCommands = {
-              \ 'rust': ['rls'],
-              \ 'cpp': ['cquery', '--log-file=/tmp/cquery.log'],
-              \ 'c': ['cquery', '--log-file=/tmp/cquery.log'],
+              \ 'rust': ['${(super.latest.rustChannels.stable.rust.override {
+                  extensions = [
+                    "rust-src"
+                    "rls-preview"
+                    "clippy-preview"
+                    "rustfmt-preview"
+                    ];})}/bin/rls'],
+              \ 'cpp': ['${super.cquery}/bin/cquery', '--log-file=/tmp/cquery.log'],
+              \ 'c': ['${super.cquery}/bin/cquery', '--log-file=/tmp/cquery.log'],
               \ }
 
             let g:LanguageClient_autostart = 1
