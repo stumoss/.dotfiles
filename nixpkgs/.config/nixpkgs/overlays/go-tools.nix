@@ -23,6 +23,7 @@ self: super:
     nix-default-go = super.writeScriptBin "nix-default-go"
     ''
       #!${super.bash}/bin/bash -p
+
       cat <<EOF > default.nix
       { buildGoModule, fetchFromGitHub, lib }:
 
@@ -36,7 +37,7 @@ self: super:
         #  owner = "stumoss";
         #  repo = "''${PWD##*/}";
         #  rev = "v\''${version}";
-        #  sha256 = "0m2fzpqxk7hrbxsgqplkg7h2p7gv6s1miymv3gvw0cz039skag0s";
+        #  sha256 = "0000000000000000000000000000000000000000000000000000";
         #};
 
         modSha256 = "0000000000000000000000000000000000000000000000000000";
@@ -46,7 +47,7 @@ self: super:
           homepage = https://github.com/stumoss/''${PWD##*/};
           license = licenses.mit;
           maintainers = with maintainers; [ stumoss ];
-          platforms = platforms.linux ++ platforms.darwin;
+          platforms = platforms.all
         };
       }
 
