@@ -10,7 +10,6 @@ in
     tmux = super.tmux;
     ripgrep = super.ripgrep;
     fd = super.fd;
-    #fzf = super.fzf;
     skim = super.skim;
     htop = super.htop;
     xsel = super.xsel;
