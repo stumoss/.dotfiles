@@ -8,26 +8,28 @@ self: super:
         pluginDictionaries = [
           { name = "airline"; }
           { name = "elm-vim"; }
-          { name = "fzf-vim"; }
-          { name = "fzfWrapper"; }
+          { name = "skim"; }
           { name = "LanguageClient-neovim"; }
+          { name = "ncm2"; }
           { name = "molokai"; }
           { name = "nerdtree"; }
           { name = "rust-vim"; }
-          { name = "vim-go"; }
-
-
-          #{ name = "neomake"; }
-          #{ name = "vim-nerdtree-tabs"; }
-          { name = "vim-pandoc"; }
-          { name = "vim-pandoc-syntax"; }
           { name = "vim-nix"; }
-          { name = "tagbar"; }
-          #{ name = "fugitive"; }
-          { name = "ncm2"; }
-          { name = "neosnippet"; }
-          { name = "neosnippet-snippets"; }
+          { name = "vim-go"; }
+          { name = "vim-abolish"; }
+          { name = "vim-surround"; }
+          { name = "vim-fugitive"; }
           { name = "echodoc"; }
+
+          #{ name = "fzf-vim"; }
+          #{ name = "fzfWrapper"; }
+          #{ name = "neomake"; }
+          #{ name = "vim-pandoc"; }
+          #{ name = "vim-pandoc-syntax"; }
+          #{ name = "tagbar"; }
+          #{ name = "neosnippet"; }
+          #{ name = "neosnippet-snippets"; }
+          #{ name = "echodoc"; }
         ];
       };
 
@@ -37,10 +39,10 @@ self: super:
             set hls!
             set virtualedit=block
             set number
+            set relativenumber
             set nocompatible
             set foldenable
-            set foldmarker={,}
-            set foldmethod=marker
+            set foldmethod=syntax
             set foldlevel=99
             set softtabstop=4
             set shiftwidth=4
@@ -65,23 +67,19 @@ self: super:
             set autoread
             set shellslash
             set hidden
+            set signcolumn=yes
 
-            colorscheme molokai
-
-            "try
-            "    colorscheme molokai
-            "catch /^Vim\%((\a\+)\)\=:E185/
-            "    " theme not found so do nothing
-            "endtry
+            try
+                colorscheme molokai
+            catch /^Vim\%((\a\+)\)\=:E185/
+                " theme not found so do nothing
+            endtry
 
             "====[ Highlight hidden characters ]===========================================
             exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
             set list
 
             "====[ FileType Specific settings ]============================================
-            autocmd BufReadPre *.go
-            \ set nolist        |
-            \ set noexpandtab
 
             au BufRead,BufNewFile *.md setlocal textwidth=80
 
@@ -104,34 +102,27 @@ self: super:
             nmap <leader>G :grep!
             " Toggle paste mode with \o
             nmap <leader>o :set paste!<CR>
-            " Use FZF/skim when doing ctrl+p
-            nmap <c-p> :Files<CR>
-            nmap <leader>p : Files<CR>
-            " Use FZF find for \f
-            nmap <leader>f :Find 
+            " Use skim when doing ctrl+p
+            nmap <c-p> :SK<CR>
+            nmap <leader>p :SK<CR>
 
 
             "====[ vim-go Settings ]=======================================================
-            let g:go_fmt_command = "${super.goimports}/bin/goimports"
-            let g:go_fmt_fail_silently = 1
-            let g:go_list_type = "quickfix"
 
-            "====[ rust.vim Settings ]=====================================================
-            let g:rustfmt_autosave = 1
 
             "====[ ripgrep ]===============================================================
-            if executable('rg')
+            if executable('${super.ripgrep}/bin/rg')
               " Use ripgrep over grep
               set grepprg=${super.ripgrep}/bin/rg\ --vimgrep
             endif
 
-            let g:neomake_echo_current_error = 1
-            let g:neomake_verbose = 0
             let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 
 
             "===[ NERDTree ] ==============================================================
             let NERDTreeMinimalUI=1
+            autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 
             "===[ LanguageCLient ] ========================================================
             let g:LanguageClient_serverCommands = {
@@ -144,22 +135,64 @@ self: super:
                     ];})}/bin/rls'],
               \ 'cpp': ['${super.cquery}/bin/cquery', '--log-file=/tmp/cquery.log'],
               \ 'c': ['${super.cquery}/bin/cquery', '--log-file=/tmp/cquery.log'],
+              \ 'go': ['${super.gotools}/bin/gopls'],
+              \ 'sh': ['${super.nodePackages.bash-language-server}/bin/bash-language-server'],
               \ }
 
             let g:LanguageClient_autostart = 1
 
-            " Maps K to hover, gd to goto definition, F2 to rename
+            " Maps K to hover
             nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+            " Use gd to go to definition
             nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-            nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-            imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-            smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-            xmap <C-k>     <Plug>(neosnippet_expand_target)
+            " Rename - rn => rename
+            nnoremap <leader> rn :call LanguageClient_textDocument_rename()<CR>
+
+            " Rename - rc => rename camelCase
+            noremap <leader>rc :call LanguageClient#textDocument_rename(
+                        \ {'newName': Abolish.camelcase(expand('<cword>'))})<CR>
+
+            " Rename - rs => rename snake_case
+            noremap <leader>rs :call LanguageClient#textDocument_rename(
+                        \ {'newName': Abolish.snakecase(expand('<cword>'))})<CR>
+
+            " Rename - ru => rename UPPERCASE
+            noremap <leader>ru :call LanguageClient#textDocument_rename(
+                        \ {'newName': Abolish.uppercase(expand('<cword>'))})<CR>
+
+
+            "===[ Go ]====================================================================
+            autocmd BufReadPre *.go
+            \ set nolist        |
+            \ set noexpandtab
+
+            "   Language Client "
+            "autocmd BufReadPost *.go setlocal filetype=go
+            " Run LanguageClient#textDocument_formatting on save
+            "autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+
+            " vim-go "
+            let g:go_fmt_command = "${super.goimports}/bin/goimports"
+            let g:go_fmt_fail_silently = 1
+            let g:go_list_type = "quickfix"
+            let g:go_def_mode='gopls'
+            let g:go_info_mode='gopls'
+            let g:go_metalinter_command='${super.golangci-lint}/bin/golangci-lint'
 
 
             "===[ Rust ] =================================================================
             autocmd BufReadPost *.rs setlocal filetype=rust
+            autocmd BufWritePre *.rs :call LanguageClient#textDocument_formatting_sync()
+
+
+            "===[ C++ ]===================================================================
+            autocmd BufReadPost *.cpp setlocal filetype=cpp
+            autocmd BufReadPost *.hpp setlocal filetype=cpp
+            autocmd BufReadPost *.h setlocal filetype=cpp
+            autocmd BufWritePre *.cpp :call LanguageClient#textDocument_formatting_sync()
+            autocmd BufWritePre *.hpp :call LanguageClient#textDocument_formatting_sync()
+            autocmd BufWritePre *.h :call LanguageClient#textDocument_formatting_sync()
       '';
     };
   };
