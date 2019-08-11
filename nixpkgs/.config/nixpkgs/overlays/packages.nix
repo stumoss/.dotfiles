@@ -1,10 +1,9 @@
 self: super:
 let
-  unstable = import (fetchTarball http://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) {};
-  master = import (fetchTarball http://github.com/NixOS/nixpkgs/archive/master.tar.gz) {};
-in
-{
-  userPackages = super.userPackages or {} // {
+  #unstable = import (fetchTarball http://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) {};
+  #master = import (fetchTarball http://github.com/NixOS/nixpkgs/archive/master.tar.gz) {};
+in {
+  userPackages = super.userPackages or { } // {
     bind = super.bind;
     bc = super.bc;
     tmux = super.tmux;
@@ -17,7 +16,7 @@ in
     mosh = super.mosh;
     borgbackup = super.borgbackup;
     renameutils = super.renameutils;
-    alacritty = master.alacritty;
+    alacritty = super.alacritty;
     openssh = super.openssh;
     autocutsel = super.autocutsel;
     apvlv = super.apvlv;
@@ -33,6 +32,8 @@ in
     stow = super.stow;
     pass = super.pass;
     gnupg = super.gnupg;
+    hexyl = super.hexyl;
+    bat = super.bat;
 
     ## Calendar
     remind = super.remind;
@@ -85,14 +86,12 @@ in
     tvnamer = super.python36Packages.tvnamer;
     go-mtpfs = super.go-mtpfs;
 
-    getcert = super.writeScriptBin "getcert"
-    ''
-        #!${super.stdenv.shell}
-        ${super.openssl}/bin/openssl s_client -showcerts -connect "$1" </dev/null 2>/dev/null | ${super.openssl}/bin/openssl x509 -outform PEM > "$2"
+    getcert = super.writeScriptBin "getcert" ''
+      #!${super.stdenv.shell}
+      ${super.openssl}/bin/openssl s_client -showcerts -connect "$1" </dev/null 2>/dev/null | ${super.openssl}/bin/openssl x509 -outform PEM > "$2"
     '';
 
-    cpp-guidelines = super.writeScriptBin "cpp-guidelines"
-    ''
+    cpp-guidelines = super.writeScriptBin "cpp-guidelines" ''
       #!${super.stdenv.shell}
       ${super.xdg_utils}/bin/xdg-open "http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines"
     '';
