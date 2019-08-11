@@ -13,7 +13,7 @@ self: super:
         sha256 = "183y3bpnahrqcgcdndskfxgb4rpk1lz3nj7qbh7nvljr7ba2r3i5";
       };
 
-      cargoSha256 = "181cd3nwq0jw88biyddc4fixijspbr4ip344wpx7mkmkz15fc2sp";
+      cargoSha256 = "1a8kqn0k7kly3lqxpgb5clhfm4jw3hpl5b76hk8zw5msvadrar3b";
 
       nativeBuildInputs = [
         super.openssl
