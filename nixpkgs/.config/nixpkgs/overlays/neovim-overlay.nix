@@ -1,16 +1,32 @@
 self: super:
 {
+  customPlugins.vim-colors-github = super.vimUtils.buildVimPlugin {
+    name = "vim-colors-github";
+    src = super.fetchFromGitHub {
+      owner = "cormacrelf";
+      repo = "vim-colors-github";
+      rev = "acb712c76bb73c20eb3d7e625a48b5ff59f150d0";
+      sha256 = "1nnbyl6qm7rksz4sc0cs5hgpa9sw5mlan732bnn7vn296qm9sjv1";
+    };
+  };
+
   neovim = super.neovim.override {
     vimAlias = true;
     configure = {
       vam = {
-        knownPlugins = super.vimPlugins;
+        knownPlugins = super.vimPlugins // self.customPlugins;
         pluginDictionaries = [
           { name = "airline"; }
           { name = "elm-vim"; }
-          { name = "skim"; }
+          { name = "fzf-vim"; }
+          { name = "fzfWrapper"; }
           { name = "LanguageClient-neovim"; }
           { name = "ncm2"; }
+          { name = "ncm2-bufword"; }
+          { name = "ncm2-path"; }
+          { name = "ncm2-ultisnips"; }
+          { name = "nvim-yarp"; } # Required by LanguageClient-neovim
+          { name = "ultisnips"; }
           { name = "molokai"; }
           { name = "nerdtree"; }
           { name = "rust-vim"; }
@@ -19,17 +35,11 @@ self: super:
           { name = "vim-abolish"; }
           { name = "vim-surround"; }
           { name = "vim-fugitive"; }
-          { name = "echodoc"; }
-
-          #{ name = "fzf-vim"; }
-          #{ name = "fzfWrapper"; }
-          #{ name = "neomake"; }
-          #{ name = "vim-pandoc"; }
-          #{ name = "vim-pandoc-syntax"; }
-          #{ name = "tagbar"; }
-          #{ name = "neosnippet"; }
-          #{ name = "neosnippet-snippets"; }
-          #{ name = "echodoc"; }
+          { name = "vim-commentary"; }
+          { name = "vim-repeat"; }
+          { name = "unicode-vim"; }
+          { name = "vim-highlightedyank"; }
+          { name = "vim-colors-github"; }
         ];
       };
 
@@ -51,8 +61,7 @@ self: super:
             set smarttab autoindent copyindent
             set nobackup
             set noswapfile
-            set showmatch
-            set showmode
+            set noshowmode
             set background=dark
             set ignorecase
             set smartcase
@@ -60,7 +69,7 @@ self: super:
             set nowrap
             set textwidth=0
             set wrapmargin=0
-            set formatoptions=qrn1
+            set formatoptions=qrn1j
             set autowriteall
             set novisualbell
             set noerrorbells
@@ -68,6 +77,11 @@ self: super:
             set shellslash
             set hidden
             set signcolumn=yes
+            set cursorline
+            set inccommand=nosplit
+
+            autocmd BufEnter  *  call ncm2#enable_for_buffer()
+            set completeopt=noinsert,menuone,noselect
 
             try
                 colorscheme molokai
@@ -76,11 +90,10 @@ self: super:
             endtry
 
             "====[ Highlight hidden characters ]===========================================
-            exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+            "set listchars=trail:\uB7,nbsp:~
             set list
 
             "====[ FileType Specific settings ]============================================
-
             au BufRead,BufNewFile *.md setlocal textwidth=80
 
 
@@ -92,22 +105,22 @@ self: super:
 
             " Remove whitespace with \w
             nmap <leader>W :%s/\s\+$//<cr>:let @/=\'\'<CR>
-            " Run make in background with \bd
-            nmap <leader>bd :Make!
             " Open NerdTree with \n
             nmap <leader>n :NERDTreeToggle<CR>
-            " Perform git grep on current word with \g
-            nmap <leader>g :grep! <C-r><C-w><CR><CR>
-            " Get Ggrep ready for a custom search with \G
-            nmap <leader>G :grep!
-            " Toggle paste mode with \o
-            nmap <leader>o :set paste!<CR>
-            " Use skim when doing ctrl+p
-            nmap <c-p> :SK<CR>
-            nmap <leader>p :SK<CR>
+            " Perform grep on current word with \g
+            nmap <leader>g :Rg <C-r><C-w><CR>
+            " Grep a specified word with \G
+            nmap <leader>G :Rg 
+            " Toggle paste mode with \p
+            nmap <leader>p :set paste!<CR>
+            " Use FZF when doing ctrl+p
+            nmap <c-p> :Files<CR>
 
-
-            "====[ vim-go Settings ]=======================================================
+            " Close if the quickfix window is the only one open
+            aug QFClose
+              au!
+              au WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
+            aug END
 
 
             "====[ ripgrep ]===============================================================
@@ -139,46 +152,55 @@ self: super:
               \ 'sh': ['${super.nodePackages.bash-language-server}/bin/bash-language-server'],
               \ }
 
-            let g:LanguageClient_autostart = 1
-
-            " Maps K to hover
-            nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-            " Use gd to go to definition
-            nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-
-            " Rename - rn => rename
-            nnoremap <leader> rn :call LanguageClient_textDocument_rename()<CR>
-
-            " Rename - rc => rename camelCase
-            noremap <leader>rc :call LanguageClient#textDocument_rename(
+            function SetLSPShortcuts()
+              nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+              nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+              nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+              nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+              nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+              nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+              nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+              nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+              nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+              nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+              nnoremap <leader>lrc :call LanguageClient#textDocument_rename(
                         \ {'newName': Abolish.camelcase(expand('<cword>'))})<CR>
-
-            " Rename - rs => rename snake_case
-            noremap <leader>rs :call LanguageClient#textDocument_rename(
+              nnoremap <leader>lrs :call LanguageClient#textDocument_rename(
                         \ {'newName': Abolish.snakecase(expand('<cword>'))})<CR>
-
-            " Rename - ru => rename UPPERCASE
-            noremap <leader>ru :call LanguageClient#textDocument_rename(
+              nnoremap <leader>lru :call LanguageClient#textDocument_rename(
                         \ {'newName': Abolish.uppercase(expand('<cword>'))})<CR>
+            endfunction()
 
+            augroup LSP
+              autocmd!
+              autocmd FileType cpp,c,go,rust,sh call SetLSPShortcuts()
+            augroup END
+
+            let g:LanguageClient_autostart = 1
+            let g:LanguageClient_changeThrottle = 0.8
 
             "===[ Go ]====================================================================
-            autocmd BufReadPre *.go
-            \ set nolist        |
-            \ set noexpandtab
-
             "   Language Client "
-            "autocmd BufReadPost *.go setlocal filetype=go
-            " Run LanguageClient#textDocument_formatting on save
-            "autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+            autocmd BufReadPost *.go setlocal filetype=go
+            autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+
+            autocmd FileType go setlocal
+             \ shiftwidth=4
+             \ tabstop=4
+             \ softtabstop=4
+             \ noexpandtab
+             \ listchars=tab:\┃\ ,trail:·,extends:>,precedes:<,nbsp:+
 
             " vim-go "
+            let g:go_fmt_autosave = 0
             let g:go_fmt_command = "${super.goimports}/bin/goimports"
             let g:go_fmt_fail_silently = 1
-            let g:go_list_type = "quickfix"
             let g:go_def_mode='gopls'
             let g:go_info_mode='gopls'
-            let g:go_metalinter_command='${super.golangci-lint}/bin/golangci-lint'
+            let g:go_highlight_build_constraints = 1
+            let g:go_metalinter_autosave = 0
+            let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+            let g:go_metalinter_command='${super.golangci-lint}/bin/golangci-lint run'
 
 
             "===[ Rust ] =================================================================
@@ -195,5 +217,9 @@ self: super:
             autocmd BufWritePre *.h :call LanguageClient#textDocument_formatting_sync()
       '';
     };
+  };
+
+  userPackages = super.userPackages or { } // {
+    fzf = super.fzf;
   };
 }

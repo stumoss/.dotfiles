@@ -9,7 +9,6 @@ in {
     tmux = super.tmux;
     ripgrep = super.ripgrep;
     fd = super.fd;
-    skim = super.skim;
     htop = super.htop;
     xsel = super.xsel;
     neovim = super.neovim;
