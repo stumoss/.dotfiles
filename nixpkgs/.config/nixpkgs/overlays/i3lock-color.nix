@@ -1,6 +1,5 @@
-self: super:
-{
-  userPackages = super.userPackages or {} // {
+self: super: {
+  userPackages = super.userPackages or { } // {
     lockscreen = super.writeScriptBin "lockscreen" ''
       #!/usr/bin/env ${super.bash}/bin/bash
 
