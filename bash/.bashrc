@@ -3,9 +3,7 @@
 [ -d "$HOME/Code/Scripts" ] && export PATH=$PATH:$HOME/Code/Scripts
 [ -d "$HOME/.cargo/bin" ] && export PATH=$PATH:$HOME/.cargo.bin
 
-[ "$(command -v fd >/dev/null)" ] && [ "$(command -v fzf >/dev/null)" ] && export FZF_DEFAULT_COMMAND="fd"
-
-[ "$(command -v fd >/dev/null)" ] && [ "$(command -v sk >/dev/null)" ] && export SKIM_DEFAULT_COMMAND="fd"
+[ "$(command -v rg >/dev/null)" ] && [ "$(command -v fzf >/dev/null)" ] && export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob "!.git/*""
 
 # shellcheck source=/home/stu/.travis/travis.sh
 [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
