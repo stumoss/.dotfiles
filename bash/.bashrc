@@ -3,7 +3,14 @@
 [ -d "$HOME/Code/Scripts" ] && export PATH=$PATH:$HOME/Code/Scripts
 [ -d "$HOME/.cargo/bin" ] && export PATH=$PATH:$HOME/.cargo.bin
 
-[ "$(command -v rg >/dev/null)" ] && [ "$(command -v fzf >/dev/null)" ] && export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob "!.git/*""
+if command -v fzf-share >/dev/null; then
+    # shellcheck source=/dev/null
+    . "$(fzf-share)/key-bindings.bash"
+    # shellcheck source=/dev/null
+    . "$(fzf-share)/completion.bash"
+
+    [ "$(command -v rg >/dev/null)" ] && export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob "!.git/*""
+fi
 
 # shellcheck source=/home/stu/.travis/travis.sh
 [ -f "$HOME/.travis/travis.sh" ] && . "$HOME/.travis/travis.sh"
@@ -29,4 +36,5 @@ fi
 if command -v remind >/dev/null; then
     alias remind='remind -m'
 fi
+
 alias dotfiles='git --git-dir=/home/stu/.cfg/ --work-tree=/home/stu'
