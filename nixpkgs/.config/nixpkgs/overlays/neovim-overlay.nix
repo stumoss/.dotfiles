@@ -40,6 +40,7 @@ self: super:
           { name = "unicode-vim"; }
           { name = "vim-highlightedyank"; }
           { name = "vim-colors-github"; }
+          { name = "auto-pairs"; }
         ];
       };
 
