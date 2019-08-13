@@ -31,7 +31,7 @@ self: super:
           { name = "nerdtree"; }
           { name = "rust-vim"; }
           { name = "vim-nix"; }
-          { name = "vim-go"; }
+          # { name = "vim-go"; }
           { name = "vim-abolish"; }
           { name = "vim-surround"; }
           { name = "vim-fugitive"; }
@@ -178,7 +178,8 @@ self: super:
             augroup END
 
             let g:LanguageClient_autostart = 1
-            let g:LanguageClient_changeThrottle = 0.8
+            let g:LanguageClient_useVirtualText = 0
+
 
             "===[ Go ]====================================================================
             "   Language Client "
