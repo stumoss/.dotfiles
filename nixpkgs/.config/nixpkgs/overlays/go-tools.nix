@@ -39,6 +39,18 @@ self: super:
       modSha256 = "1wvf6nfws4z1v59qg516k0knac8p59svpm1gqh3m00y4g3zsmyx8";
     };
 
+    go-static-build = super.writeScriptBin "go-static-build"
+    ''
+      #!${super.bash}/bin/bash -p
+      CGO_ENABLED=0 ${super.go}/bin/go build -a -ldflags '-extldflags "-static"' $@
+    '';
+
+    go-wasm-exec = super.writeScriptBin "go-wasm-exec"
+    ''
+      #!/usr/bin/env ${super.bash}/bin/bash
+      GOOS=js GOARCH=wasm ${super.go}/bin/go run -exec="$(${super.go}/bin/go env GOROOT)/misc/wasm/go_js_wasm_exec" "$@"
+    '';
+
     nix-shell-go = super.writeScriptBin "nix-shell-go"
     ''
       #!${super.bash}/bin/bash -p
@@ -51,7 +63,6 @@ self: super:
       mkShell {
         buildInputs = [
           go
-          go-static-build
           gotests
           delve
           golangci-lint
@@ -98,17 +109,5 @@ self: super:
       }
       EOF
     '';
-
-    go-static-build = super.writeScriptBin "go-static-build"
-    ''
-      #!${super.bash}/bin/bash -p
-      CGO_ENABLED=0 ${super.go}/bin/go build -a -ldflags '-extldflags "-static"' $@
-    '';
-
-    go-wasm-exec = super.writeScriptBin "go-wasm-exec"
-    ''
-      #!/usr/bin/env ${super.bash}/bin/bash
-      GOOS=js GOARCH=wasm ${super.go}/bin/go run -exec="$(${super.go}/bin/go env GOROOT)/misc/wasm/go_js_wasm_exec" "$@"
-    '';
-    };
+  };
 }
