@@ -52,15 +52,15 @@ self: super:
         buildInputs = [
           go
           go-static-build
-          gotests = super.gotests;
-          delve = super.delve;
-          golangci-lint = super.golangci-lint;
-          errcheck = super.errcheck;
-          go-check = super.go-check;
-          gotools = super.gotools;
-          goconst = super.goconst;
-          gocyclo = super.gocyclo;
-          golint = super.golint;
+          gotests
+          delve
+          golangci-lint
+          errcheck
+          go-check
+          gotools
+          goconst
+          gocyclo
+          golint
         ];
       }
       EOF
