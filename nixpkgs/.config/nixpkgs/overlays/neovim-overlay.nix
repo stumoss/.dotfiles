@@ -37,6 +37,7 @@ self: super:
           { name = "vim-fugitive"; }
           { name = "vim-commentary"; }
           { name = "vim-repeat"; }
+          { name = "vim-unimpaired"; }
           { name = "unicode-vim"; }
           { name = "vim-highlightedyank"; }
           { name = "vim-colors-github"; }
