@@ -42,6 +42,7 @@ self: super:
           { name = "vim-highlightedyank"; }
           { name = "vim-colors-github"; }
           { name = "auto-pairs"; }
+          { name = "limelight-vim"; }
         ];
       };
 
@@ -81,6 +82,8 @@ self: super:
             set signcolumn=yes
             set cursorline
             set inccommand=nosplit
+            set noequalalways
+
 
             autocmd BufEnter  *  call ncm2#enable_for_buffer()
             set completeopt=noinsert,menuone,noselect
