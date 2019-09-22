@@ -69,7 +69,6 @@ in {
     # Audio
     beets = super.beets;
     cmus = super.cmus;
-    greg = super.greg;
 
     # Social
     weechat = super.weechat;
