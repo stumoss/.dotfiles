@@ -6,7 +6,7 @@ in {
   userPackages = super.userPackages or { } // {
     bind = super.bind;
     bc = super.bc;
-    tmux = super.tmux;
+    tmux = super.callPackage ./pkgs/tmux/default.nix { };
     ripgrep = super.ripgrep;
     fd = super.fd;
     htop = super.htop;
@@ -15,7 +15,7 @@ in {
     mosh = super.mosh;
     borgbackup = super.borgbackup;
     renameutils = super.renameutils;
-    alacritty = super.alacritty;
+    alacritty = super.callPackage ./pkgs/alacritty/default.nix { };
     openssh = super.openssh;
     autocutsel = super.autocutsel;
     apvlv = super.apvlv;
@@ -67,7 +67,7 @@ in {
     mpv = super.mpv;
 
     # Audio
-    beets = super.beets;
+    beets = super.callPackage ./pkgs/beets/default.nix { };
     cmus = super.cmus;
 
     # Social
