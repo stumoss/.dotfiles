@@ -29,10 +29,6 @@ if command -v docker >/dev/null; then
     alias rust-musl-builder='docker run --rm -it -v "$(pwd)":/home/rust/src ekidd/rust-musl-builder'
 fi
 
-if command -v tmux >/dev/null; then
-    alias tmux='tmux -f "$HOME/.config/tmux/tmux.conf"'
-fi
-
 if command -v remind >/dev/null; then
     alias remind='remind -m'
 fi

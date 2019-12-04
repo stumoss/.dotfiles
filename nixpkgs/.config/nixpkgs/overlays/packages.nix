@@ -29,10 +29,15 @@ in {
     wget = super.wget;
     unzip = super.unzip;
     stow = super.stow;
-    pass = super.pass;
+    pass = super.pass.withExtensions (ext: [
+      super.passExtensions.pass-genphrase
+      super.passExtensions.pass-update
+      super.passExtensions.pass-audit
+    ]);
     gnupg = super.gnupg;
     hexyl = super.hexyl;
     bat = super.bat;
+    skim = super.skim;
 
     ## Calendar
     remind = super.remind;
@@ -51,6 +56,7 @@ in {
     git-lfs = super.git-lfs;
     jq = super.jq;
     shellcheck = super.shellcheck;
+    httpie = super.httpie;
 
     # Docker
     docker = super.docker;
@@ -60,6 +66,7 @@ in {
     feh = super.feh;
     imagemagick = super.imagemagick;
     darktable = super.darktable;
+    inkscape = super.inkscape;
 
     # Video
     ffmpeg-full = super.ffmpeg-full;
@@ -75,13 +82,16 @@ in {
 
     # Browser
     #google-chrome = super.google-chrome; # Broken on darwin
-    #chromecastise = super.chromecastise;
 
     # Network tools
     #wireshark-gtk = super.wireshark-gtk;
 
+
+    # Accounting
+    hledger = super.hledger;
+
     # Utilities
-    tvnamer = super.python36Packages.tvnamer;
+    tvnamer = super.python38Packages.tvnamer;
     go-mtpfs = super.go-mtpfs;
 
     getcert = super.writeScriptBin "getcert" ''
@@ -95,4 +105,3 @@ in {
     '';
   };
 }
-

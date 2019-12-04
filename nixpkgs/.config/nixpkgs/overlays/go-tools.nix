@@ -1,6 +1,7 @@
 self: super: {
-  gopls = super.buildGoModule rec {
-    pname = "gopls";
+
+  go-tools = super.buildGoModule rec {
+    pname = "go-tools";
     version = "0.2.1";
     rev = "08e24063958e5e317347cebd02a9ff7737109f18";
 
@@ -13,7 +14,7 @@ self: super: {
     };
 
     modSha256 = "16cfzmfr9jv8wz0whl433xdm614dk63fzjxv6l1xvkagjmki49iy";
-    subPackages = [ "cmd/gopls" ];
+    subPackages = [ "cmd/gopls" "cmd/stringer" "cmd/godoc" "cmd/gomvpkg"];
   };
 
   staticcheck = super.buildGoModule rec {
@@ -191,7 +192,8 @@ self: super: {
   '';
 
   userPackages = super.userPackages or { } // {
-    go = super.go_1_13;
+    go = super.go;
+    go-tools = self.go-tools;
     gotests = super.gotests;
     delve = super.delve;
     errcheck = super.errcheck;
@@ -199,12 +201,12 @@ self: super: {
     goconst = super.goconst;
     gocyclo = super.gocyclo;
     golint = super.golint;
-    gopls = self.gopls;
     staticcheck = self.staticcheck;
     golangci-lint = self.golangci-lint;
     gomock = self.gomock;
     pgker = self.pkger;
     ghz = self.ghz;
+    gomodifytags = super.gomodifytags;
     go-static-build = self.go-static-build;
     go-wasm-exec = self.go-wasm-exec;
     nix-shell-go = self.nix-shell-go;
