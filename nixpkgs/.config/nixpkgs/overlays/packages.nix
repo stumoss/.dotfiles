@@ -86,7 +86,6 @@ in {
     # Network tools
     #wireshark-gtk = super.wireshark-gtk;
 
-
     # Accounting
     hledger = super.hledger;
 

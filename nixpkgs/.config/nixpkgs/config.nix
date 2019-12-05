@@ -1,9 +1,7 @@
-with import <nixpkgs> {};
+with import <nixpkgs> { };
 
 {
   allowUnfree = true;
 
-  chrome = {
-    enablePepperFlash = true;
-  };
+  chrome = { enablePepperFlash = true; };
 }

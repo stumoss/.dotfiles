@@ -34,7 +34,9 @@ self: super: {
           { name = "molokai"; }
           { name = "nerdtree"; }
           { name = "rust-vim"; }
-          { name = "vim-nix"; }
+          {
+            name = "vim-nix";
+          }
           # { name = "vim-go"; }
           { name = "vim-abolish"; }
           { name = "vim-surround"; }
@@ -312,8 +314,8 @@ self: super: {
     bash-language-server = super.nodePackages.bash-language-server;
     cquery = super.cquery;
     rust = (super.latest.rustChannels.stable.rust.override {
-            extensions =
-              [ "rust-src" "rls-preview" "clippy-preview" "rustfmt-preview" ];
-          });
+      extensions =
+        [ "rust-src" "rls-preview" "clippy-preview" "rustfmt-preview" ];
+    });
   };
 }

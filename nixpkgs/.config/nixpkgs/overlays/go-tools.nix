@@ -14,7 +14,7 @@ self: super: {
     };
 
     modSha256 = "16cfzmfr9jv8wz0whl433xdm614dk63fzjxv6l1xvkagjmki49iy";
-    subPackages = [ "cmd/gopls" "cmd/stringer" "cmd/godoc" "cmd/gomvpkg"];
+    subPackages = [ "cmd/gopls" "cmd/stringer" "cmd/godoc" "cmd/gomvpkg" ];
   };
 
   gomock = super.buildGoModule rec {
