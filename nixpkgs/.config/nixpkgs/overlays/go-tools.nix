@@ -17,20 +17,6 @@ self: super: {
     subPackages = [ "cmd/gopls" "cmd/stringer" "cmd/godoc" "cmd/gomvpkg"];
   };
 
-  staticcheck = super.buildGoModule rec {
-    name = "staticcheck";
-    version = "2019.2.3";
-
-    src = super.fetchFromGitHub {
-      rev = "afd67930eec2a9ed3e9b19f684d17a062285f16a";
-      owner = "dominikh";
-      repo = "go-tools";
-      sha256 = "1rwwahmbs4dwxncwjj56likir1kps9937vm2id3rygxzzla40zal";
-    };
-
-    modSha256 = "0ysaq94m7pkziliz4z4dl8ad84mbn17m2hqxvs9wbw4iwhkpi7gz";
-  };
-
   gomock = super.buildGoModule rec {
     name = "gomock";
     version = "1.3.1";
@@ -201,7 +187,6 @@ self: super: {
     goconst = super.goconst;
     gocyclo = super.gocyclo;
     golint = super.golint;
-    staticcheck = self.staticcheck;
     golangci-lint = self.golangci-lint;
     gomock = self.gomock;
     pgker = self.pkger;
