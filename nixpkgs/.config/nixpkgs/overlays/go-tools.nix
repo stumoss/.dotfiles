@@ -111,6 +111,49 @@ self: super: {
     };
   };
 
+  gotests = super.buildGoModule rec {
+    name = "gotests";
+    version = "62fe1b80bbe2c4c7cb0ab26d868795b47475ab90";
+    rev = "62fe1b80bbe2c4c7cb0ab26d868795b47475ab90";
+
+    src = super.fetchFromGitHub rec {
+      owner = "cweill";
+      repo = "gotests";
+      inherit rev;
+      sha256 = "03ak0wx33b7ziqrdmra4bm9lcjdqc6y7i3fp2yd5x5m0bg46r86h";
+    };
+
+    modSha256 = "0sqxbg0iin0b25yrrmm43n3fc68z4g5nbz19gmbajlvglyjw7pgk";
+
+    meta = with super.lib; {
+      description = "Generate Go tests from your source code";
+      homepage = "https://github.com/cweill/gotests";
+      platforms = platforms.all;
+    };
+  };
+
+  go-mutesting = super.buildGoModule rec {
+    name = "go-mutesting";
+    version = "1.1.0";
+    rev = "90970dc0b939b75fc30077d8b3f1e67cb5103981";
+
+    src = super.fetchFromGitHub rec {
+      owner = "srikrsna";
+      repo = "go-mutesting";
+      inherit rev;
+      sha256 = "017918ijfxgg57j670vm00vsy8l1qcjmnbpp5m2cy3wlry28hahp";
+    };
+
+    modSha256 = "0qfg53zrhx9kfahgspgdfzixdxd0pr41hf06jvsgzig8mk8yxlcx";
+
+    meta = with super.lib; {
+      description = "Mutation testing for Go source code";
+      homepage = "https://github.com/srikrsna/go-mutesting";
+      license = licenses.mit;
+      platforms = platforms.all;
+    };
+  };
+
   go-static-build = super.writeScriptBin "go-static-build" ''
     #!${super.bash}/bin/bash -p
     CGO_ENABLED=0 ${super.go}/bin/go build -a -ldflags '-extldflags "-static"' $@
@@ -180,7 +223,7 @@ self: super: {
   userPackages = super.userPackages or { } // {
     go = super.go;
     go-tools = self.go-tools;
-    gotests = super.gotests;
+    gotests = self.gotests;
     delve = super.delve;
     errcheck = super.errcheck;
     go-check = super.go-check;
@@ -191,6 +234,7 @@ self: super: {
     gomock = self.gomock;
     pgker = self.pkger;
     ghz = self.ghz;
+    go-mutesting = self.go-mutesting;
     gomodifytags = super.gomodifytags;
     go-static-build = self.go-static-build;
     go-wasm-exec = self.go-wasm-exec;
