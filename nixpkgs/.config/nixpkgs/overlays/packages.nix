@@ -11,7 +11,7 @@ in {
     fd = super.fd;
     htop = super.htop;
     xsel = super.xsel;
-    neovim = super.neovim;
+    neovim = self.neovim;
     mosh = super.mosh;
     borgbackup = super.borgbackup;
     renameutils = super.renameutils;

@@ -33,7 +33,7 @@ self: super: {
 
   golangci-lint = super.buildGoModule rec {
     name = "golangci-lint";
-    version = "1.21.0";
+    version = "1.22.2";
     rev = "645e79404d82daf769881148422db5b511bbc34f";
 
     src = super.fetchFromGitHub rec {
